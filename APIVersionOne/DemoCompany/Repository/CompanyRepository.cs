@@ -14,39 +14,37 @@ namespace DemoCompany.Repository
             _dbContext = dbContext;
         }
 
-        public async Task<Company> AddCompany(Company company)
+        public void AddCompany(Company company)
         {
             _dbContext.Companies.Add(company);
-            await _dbContext.SaveChangesAsync();
-            return company;
+            _dbContext.SaveChanges();
         }
 
-        public async Task Delete(int id)
+        public void UpdateCompany(Company company)
+        {
+            _dbContext.Update(company);
+            _dbContext.SaveChanges();
+        }
+
+        public async void Delete(int id)
         {
             Company company = _dbContext.Companies.Find(id);
-            if(company != null) 
+            if (company != null)
             {
                 _dbContext.Companies.Remove(company);
             }
             _dbContext.SaveChanges();
         }
 
-        public async Task<List<Company>> GetAllCompany()
+        public List<Company> GetAllCompany()
         {
             List<Company> companies = _dbContext.Companies.ToList();
             return companies;
         }
 
-        public async Task<Company> GetById(int id)
+        public Company GetById(int id)
         {
             Company company = _dbContext.Companies.Find(id);
-            return company;
-        }
-
-        public async Task<Company> UpdateCompany(Company company)
-        {
-            _dbContext.Update(company);
-            _dbContext.SaveChanges();
             return company;
         }
     }

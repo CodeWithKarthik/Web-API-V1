@@ -18,7 +18,6 @@ namespace DemoCompany.Controllers
         }
 
         [HttpPost]
-        //access specifer return type function name
         public ActionResult Create([FromBody] Company company)
         {
             if (ModelState.IsValid)
@@ -33,14 +32,14 @@ namespace DemoCompany.Controllers
         public ActionResult GetAllCompanies()
         {
             var companies = _companyRepository.GetAllCompany();
-            return Ok(companies.Result);
+            return Ok(companies);
         }
 
         [HttpGet("{id:int}")]
         public ActionResult GetById(int id)
         {
             var company = _companyRepository.GetById(id);
-            return Ok(company.Result);
+            return Ok(company);
         }
 
         [HttpPut]
