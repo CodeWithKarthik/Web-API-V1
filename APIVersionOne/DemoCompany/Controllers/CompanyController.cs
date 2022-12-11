@@ -1,5 +1,6 @@
 ﻿using DemoCompany.Data;
 using DemoCompany.Model;
+using DemoCompany.Repository.IRepository;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 
@@ -9,57 +10,56 @@ namespace DemoCompany.Controllers
     [ApiController]
     public class CompanyController : ControllerBase
     {
-        private readonly ApplicationDbContext _dbContext;
-        public CompanyController(ApplicationDbContext dbContext)
+        private ICompanyRepository _companyRepository;
+
+        public CompanyController(ICompanyRepository companyRepository)
         {
-            _dbContext = dbContext;
+            _companyRepository = companyRepository;
         }
 
         [HttpPost]
         //access specifer return type function name
         public ActionResult Create([FromBody] Company company)
         {
-            _dbContext.Companies.Add(company);
-            _dbContext.SaveChanges();
-            return Ok();
+            if (ModelState.IsValid)
+            {
+                _companyRepository.AddCompany(company);
+                return Ok();
+            }
+            return BadRequest();
         }
 
         [HttpGet]
         public ActionResult GetAllCompanies()
         {
-            List<Company> companies = _dbContext.Companies.ToList();
-            return Ok(companies);
+            var companies = _companyRepository.GetAllCompany();
+            return Ok(companies.Result);
         }
 
         [HttpGet("{id:int}")]
         public ActionResult GetById(int id)
         {
-            Company company = _dbContext.Companies.Find(id);
-            return Ok(company);
+            var company = _companyRepository.GetById(id);
+            return Ok(company.Result);
         }
 
         [HttpPut]
         public ActionResult Update([FromBody] Company company)
         {
-            _dbContext.Companies.Update(company);
-            _dbContext.SaveChanges();
-            return Ok();
+
+            if (ModelState.IsValid)
+            {
+                _companyRepository.UpdateCompany(company);
+                return Ok();
+            }
+            return BadRequest();
         }
 
         [HttpDelete]
         public ActionResult DeleteById(int id)
         {
-            Company company = _dbContext.Companies.Find(id);
-            if(company != null)
-            {
-                _dbContext.Companies.Remove(company);
-                _dbContext.SaveChanges();
-                return Ok();
-            }
-            else
-            {
-                return BadRequest();
-            }
+            _companyRepository.Delete(id);
+            return Ok();
         }
     }
 }

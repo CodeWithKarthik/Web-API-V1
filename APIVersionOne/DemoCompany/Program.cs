@@ -1,4 +1,6 @@
 using DemoCompany.Data;
+using DemoCompany.Repository;
+using DemoCompany.Repository.IRepository;
 using Microsoft.EntityFrameworkCore;
 
 var builder = WebApplication.CreateBuilder(args);
@@ -14,6 +16,8 @@ var connectionString = builder.Configuration.GetConnectionString("DefaultConnect
 builder.Services.AddDbContext<ApplicationDbContext>(x => x.UseSqlServer(connectionString));
 
 #endregion
+
+builder.Services.AddTransient<ICompanyRepository,CompanyRepository>();
 
 // Learn more about configuring Swagger/OpenAPI at https://aka.ms/aspnetcore/swashbuckle
 builder.Services.AddEndpointsApiExplorer();

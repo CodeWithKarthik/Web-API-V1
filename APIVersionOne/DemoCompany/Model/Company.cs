@@ -12,5 +12,8 @@ namespace DemoCompany.Model
 
         [Range(1,1000)]
         public int NumberOfEmployee { get; set; }
+
+        [Required]
+        public string CompanyOwner { get; set; }
     }
 }
