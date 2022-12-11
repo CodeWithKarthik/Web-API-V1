@@ -35,7 +35,8 @@ namespace DemoCompany.Controllers
             return Ok(companies);
         }
 
-        [HttpGet("{id:int}")]
+        [HttpGet]
+        [Route("Single")]
         public ActionResult GetById(int id)
         {
             var company = _companyRepository.GetById(id);

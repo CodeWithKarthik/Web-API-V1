@@ -26,9 +26,9 @@ namespace DemoCompany.Repository
             _dbContext.SaveChanges();
         }
 
-        public async void Delete(int id)
+        public void Delete(int id)
         {
-            Company company = _dbContext.Companies.Find(id);
+            Company company = GetById(id);
             if (company != null)
             {
                 _dbContext.Companies.Remove(company);
@@ -42,9 +42,9 @@ namespace DemoCompany.Repository
             return companies;
         }
 
-        public Company GetById(int id)
+        public  Company GetById(int id)
         {
-            Company company = _dbContext.Companies.Find(id);
+            Company company =  _dbContext.Companies.FirstOrDefault(x=>x.CompanyId == id);
             return company;
         }
     }
